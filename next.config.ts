@@ -1,8 +1,8 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
   experimental: {
-    serverActions: {}, // Enable server actions
-    // `serverComponentsExternalPackages` is no longer supported; remove it.
+    // Uncomment if you are using server actions, otherwise remove it
+    // serverActions: {},
   },
   images: {
     remotePatterns: [
@@ -26,6 +26,10 @@ const nextConfig = {
   },
   typescript: {
     ignoreBuildErrors: true,
+  },
+  env: {
+    // Expose the MongoDB URI as an environment variable for server-side usage
+    MONGODB_URI: process.env.MONGODB_URI || "",
   },
 };
 
