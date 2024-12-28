@@ -23,7 +23,7 @@ async function connectToDB():Promise<void> {
     }
     catch(error){
         console.log("Database connection failer" ,error)
-        process.exit(1) ;
+       // process.exit(1) ;
     }
 }
 

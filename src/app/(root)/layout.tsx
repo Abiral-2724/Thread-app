@@ -6,6 +6,8 @@ import Topbar from "@/components/shared/Topbar";
 import LeftSidebar from "@/components/shared/LeftSidebar";
 import RightSidebar from "@/components/shared/RightSidebar";
 import Bottombar from "@/components/shared/Bottombar";
+import { ToastContainer} from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -29,6 +31,7 @@ export default function RootLayout({
 }>) {
   return (
     <ClerkProvider>
+    
       <html lang="en">
       <body
         className={`${geistSans.variable} ${geistMono.variable} antialiased`}
@@ -38,6 +41,7 @@ export default function RootLayout({
       <LeftSidebar></LeftSidebar>
         <section className="main-container">
         <div className="w-full max-w-4xl">
+        <ToastContainer position="top-right" autoClose={5000} />
           {children}
         </div>
         </section>

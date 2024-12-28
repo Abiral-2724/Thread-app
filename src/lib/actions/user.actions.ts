@@ -51,3 +51,20 @@ export async function updateUser({
     // throw new Error("Error updating user data.");
   }
 }
+
+
+export async function fetchUser(userId : string) {
+    try{
+        await connectToDB() ;
+        return await User
+        .findOne({id : userId})
+        // .populate({
+        //     path : 'communities',
+        //     model : Community
+
+        // })
+    }
+    catch(error){
+        console.log("failed to fetch user") ;
+    }
+}
