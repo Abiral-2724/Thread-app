@@ -1,65 +1,114 @@
+'use client'
 
+import { useEffect, useState } from 'react';
 import ThreadCard from "@/components/cards/ThreadCard";
 import Comment from "@/components/forms/Comment";
-import { currentUser } from "@clerk/nextjs/server";
-import { redirect } from "next/navigation";
+import { useUser } from "@clerk/nextjs";
+import { useParams, useRouter } from "next/navigation";
 import { toast } from "react-toastify";
 import axios from "axios";
 
-export default async function Page({ params }: { params: { id: string } }) {
-    if (!params.id) {
-        return null;
-    }
+export default function Page() {
+    const router = useRouter();
+    const params = useParams();
+    const threadId = params.id as string;
+    const { user, isLoaded } = useUser();
+    const [userInfo, setUserInfo] = useState<any>(null);
+    const [thread, setThread] = useState<any>(null);
+    const [loading, setLoading] = useState(true);
+    const [comments, setComments] = useState<any[]>([]);
 
-    const user = await currentUser();
+    const fetchThreadData = async () => {
+        try {
+            const threadResponse = await axios.get(`/api/thread/${threadId}`);
+            const threadData = threadResponse.data;
+            
+            // Set the main thread data without comments
+            const { children, ...threadWithoutComments } = threadData;
+            setThread(threadWithoutComments);
+            
+            // Set comments separately and reverse the order
+            if (children) {
+                setComments([...children].reverse());
+            }
+        } catch (error) {
+            console.error("Error fetching thread:", error);
+            toast.error("Error fetching thread data");
+        }
+    };
+
+    useEffect(() => {
+        const fetchData = async () => {
+            if (!isLoaded || !user) return;
+
+            try {
+                const userInfoResponse = await axios.get(`/api/user/${user.id}`);
+                const userInfoData = userInfoResponse.data;
+
+                if (!userInfoData?.onboarded) {
+                    router.push('/onboarding');
+                    return;
+                }
+
+                setUserInfo(userInfoData);
+                await fetchThreadData();
+            } catch (error) {
+                console.error("Error fetching data:", error);
+                toast.error("Error fetching data");
+            } finally {
+                setLoading(false);
+            }
+        };
+
+        fetchData();
+    }, [user, isLoaded, threadId, router]);
+
+    const handleCommentAdded = async () => {
+        await fetchThreadData();
+    };
+
+    if (!isLoaded || loading) {
+        return <div>Loading...</div>;
+    }
 
     if (!user) {
         toast.error("No user found");
         return null;
     }
-    console.log(user.id) ;
 
-    try {
-        // Fetch user info from your API using Axios, passing the _id from your DB
-        const userInfoResponse = await axios.get(`http://localhost:3000/api/user/${user.id}`);  // Ensure this uses user.id from Clerk
-        const userInfo = userInfoResponse.data;
-        console.log(userInfo) ;
-        if (!userInfo?.onboarded) {
-            redirect('/onboarding');
-        }
+    if (!thread || !userInfo) {
+        return null;
+    }
 
-        // Fetch thread data using Axios
-        const threadResponse = await axios.get(`http://localhost:3000/api/thread/${params.id}`);
-        const thread = threadResponse.data;
-
-        return (
-            <div>
-                <section>
-                    <div>
-                        <ThreadCard
-                            id={thread._id}
-                            currentUserId={userInfo._id || ""}  // Use _id here for currentUserId
-                            parentId={thread.parentId}
-                            content={thread.text}
-                            author={thread.author}
-                            community={thread.community}
-                            createdAt={thread.createdAt}
-                            comments={thread.children}
-                        />
-                    </div>
-                    <div className="mt-7">
-                        <Comment
-                            threadId={thread._id}
-                            currentUserImg={userInfo.image}
-                            currentUserId={userInfo._id}  // Pass _id from the database
-                        />
-                    </div>
-                    <div className="mt-10">
-                        {thread.children.map((childItem: any) => (
-                            <div className="mt-5" key={childItem._id}>
- <ThreadCard 
+    return (
+        <div>
+            <section>
+                <div>
+                    <ThreadCard
+                        id={thread._id}
+                        currentUserId={userInfo._id || ""}
+                        parentId={thread.parentId}
+                        content={thread.text}
+                        author={thread.author}
+                        community={thread.community}
+                        createdAt={thread.createdAt}
+                        comments={comments}
+                    />
+                </div>
+                <div className="mt-7">
+                    <Comment
+                        threadId={thread._id}
+                        currentUserImg={userInfo.image}
+                        currentUserId={userInfo._id}
+                        onCommentAdded={handleCommentAdded}
+                    />
+                </div>
+                <div className="mt-10">
+                    {comments.map((childItem: any) => (
+                        <div className="mt-5" key={childItem._id}>
+                            <ThreadCard
                                 id={childItem._id}
-                                currentUserId={childItem?.author?._id || ""} // Adjust this if necessary
+                                currentUserId={childItem?.author?._id || ""}
                                 parentId={childItem.parentId}
                                 content={childItem.text}
                                 author={childItem.author}
@@ -68,16 +117,10 @@ export default async function Page({ params }: { params: { id: string } }) {
                                 comments={childItem.children}
                                 isComment
                             />
-                            </div>
-                           
-                        ))}
-                    </div>
-                </section>
-            </div>
-        );
-    } catch (error) {
-        console.error("Error fetching data:", error);
-        toast.error("Error fetching data");
-        return null;
-    }
+                        </div>
+                    ))}
+                </div>
+            </section>
+        </div>
+    );
 }

@@ -2,10 +2,10 @@
 import { sidebarLinks } from "@/constants";
 import Image from "next/image";
 import Link from "next/link";
-import { usePathname, useRouter } from "next/navigation";
+import { usePathname} from "next/navigation";
 
 export default function Bottombar() {
-    const router = useRouter();
+   // const router = useRouter();
     const pathname = usePathname();
     return (
         <div>

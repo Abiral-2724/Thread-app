@@ -10,7 +10,7 @@ import {
 } from "@/components/ui/form";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { usePathname, useRouter } from "next/navigation";
+import { usePathname } from "next/navigation";
 import { CommentValidation } from "@/lib/validations/thread";
 import * as z from "zod";
 import axios from "axios";
@@ -22,14 +22,15 @@ interface Props {
   threadId: string;
   currentUserImg: string;
   currentUserId: string;
+  onCommentAdded: () => void;
 }
 
 const Comment = ({
   threadId,
   currentUserImg,
   currentUserId,
+  onCommentAdded
 }: Props) => {
-  const router = useRouter();
   const pathname = usePathname();
 
   const form = useForm({
@@ -48,9 +49,12 @@ const Comment = ({
         path: pathname,
       });
 
-      toast.success("Comment added successfully!");
       form.reset();
-      router.refresh(); // Refresh the current page to show the updated comments
+      
+      // Call onCommentAdded immediately after successful submission
+      await onCommentAdded();
+      
+      toast.success("Comment added successfully!");
     } catch (error) {
       console.error("Error adding comment:", error);
       toast.error("Failed to add comment. Please try again.");

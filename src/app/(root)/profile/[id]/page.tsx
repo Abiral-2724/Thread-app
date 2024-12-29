@@ -16,8 +16,9 @@ async function Page({params} : { params: {id : string}}) {
     console.log("User not found while creating thread");
     return null;
   }
+  const paramid = (await params).id ;
 
-  const userInfo = await fetchUser(params.id);
+  const userInfo = await fetchUser(paramid);
 
   if (!userInfo?.onboarded) {
     redirect("/onboarding");
