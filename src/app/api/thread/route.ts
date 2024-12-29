@@ -16,7 +16,7 @@ export async function POST(req: Request) {
     // Connect to the database
     await connectToDB();
 
-    const { text, author, communityId, path }: Params = await req.json();
+    const { text, author, communityId}: Params = await req.json();
 
     // Create the thread in the database
     const createdThread = await Thread.create({
@@ -95,4 +95,3 @@ export async function GET(req: NextRequest) {
   }
 
 
-  

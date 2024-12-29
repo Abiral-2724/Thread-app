@@ -17,17 +17,7 @@ import { z } from "zod";
 import axios from "axios"; // Import axios
 import { toast } from "react-toastify";
 
-interface Props {
-  user: {
-    id: string;
-    objectId: string;
-    username: string;
-    name: string;
-    bio: string;
-    image: string;
-  };
-  btnTitle: string;
-}
+
 
 function PostThread({ userId }: { userId: string }) {
   const router = useRouter();

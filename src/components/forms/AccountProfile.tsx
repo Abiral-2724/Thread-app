@@ -38,7 +38,7 @@ interface Props {
 
 
 
-export default function AccountProfile({ user, btnTitle }: Props) {
+export default function AccountProfile({ user}: Props) {
   const router = useRouter();
   const pathname = usePathname()
   const [files, setFiles] = useState<File[]>([])

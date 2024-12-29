@@ -24,9 +24,7 @@ async function Page({params} : { params: {id : string}}) {
     redirect("/onboarding");
   }
 
-  // Convert `userInfo._id` to a plain string if necessary
-  const userId = userInfo._id.toString();
-
+  
     return (
         <div>
             <ProfileHeader 

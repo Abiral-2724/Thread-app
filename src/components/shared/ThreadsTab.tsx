@@ -14,7 +14,7 @@ const ThreadsTab = async ({
 } : Props) => {
 
     // fetch profile thread
-    let result = await fetchUserPosts(accountId) ;
+    const result = await fetchUserPosts(accountId) ;
 
     if(!result){
         redirect('/') ;

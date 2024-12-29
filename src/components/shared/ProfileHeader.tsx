@@ -10,8 +10,8 @@ interface Props {
 }
 
 const ProfileHeader = ({
-    accountId ,
-    authUserId ,
+    // accountId ,
+    // authUserId ,
     name , 
     username ,
     imgUrl ,

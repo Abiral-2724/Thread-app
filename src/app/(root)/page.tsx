@@ -8,7 +8,7 @@ export default function Home() {
   const [posts, setPosts] = useState<any[]>([]);
   const [isNext, setIsNext] = useState(false);
   const [loading, setLoading] = useState(true);
-  const { user, isLoaded } = useUser(); // Client-side method to fetch user data
+  const { user} = useUser(); // Client-side method to fetch user data
   const [page, setPage] = useState(1); // State to manage pagination
 
   useEffect(() => {

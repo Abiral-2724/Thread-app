@@ -30,6 +30,7 @@ const nextConfig = {
   },
   typescript: {
     ignoreBuildErrors: true,
+    
   },
   env: {
     // Expose the MongoDB URI as an environment variable for server-side usage

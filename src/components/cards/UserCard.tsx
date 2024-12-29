@@ -17,7 +17,6 @@ const UserCard = ({
     name,
     username ,
     imgUrl ,
-    personType
 } : Props) => {
 
     const router = useRouter() ;
