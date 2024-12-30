@@ -75,5 +75,3 @@ This project does not currently have a license. Feel free to contact the reposit
 For more details, visit the [repository on GitHub](https://github.com/Abiral-2724/ThreadScape-app).
 
 ```
-
-You can add this content to a `README.md` file in the root directory of your repository.
