@@ -2,7 +2,7 @@
 // components/SearchInput.tsx
 import { Input } from "@/components/ui/input";
 import { useRouter, usePathname, useSearchParams } from "next/navigation";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 
 export function SearchInput() {
   const router = useRouter();

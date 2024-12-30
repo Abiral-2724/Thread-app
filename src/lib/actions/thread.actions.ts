@@ -133,5 +133,3 @@ export async function addCommentToThread(threadId : string ,commentText : string
     }
 }
 
-export async function deleteThread(id: string, path: string): Promise<void> {
-}
