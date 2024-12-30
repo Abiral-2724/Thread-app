@@ -44,12 +44,12 @@ export default function Home() {
       setPage((prevPage) => prevPage + 1); // Load next page of posts
     }
   };
-
+  console.log("Post = " ,posts);
   if (loading) return <p className="text-center text-lg">Loading...</p>;
 
   return (
     <div>
-      <h1 className="head-text text-left text-4xl font-bold mb-8">Home</h1>
+      <h1 className="head-text text-center text-4xl font-bold mb-8">Posts</h1>
       <section className="mt-9 flex flex-col gap-10">
         {posts.length === 0 ? (
           <p className="no-result text-center text-xl text-gray-500">No thread found</p>

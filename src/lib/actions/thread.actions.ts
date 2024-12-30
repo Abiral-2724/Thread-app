@@ -132,3 +132,6 @@ export async function addCommentToThread(threadId : string ,commentText : string
     throw new Error('Error while creating thread')
     }
 }
+
+export async function deleteThread(id: string, path: string): Promise<void> {
+}

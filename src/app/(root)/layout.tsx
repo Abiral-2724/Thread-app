@@ -8,6 +8,7 @@ import RightSidebar from "@/components/shared/RightSidebar";
 import Bottombar from "@/components/shared/Bottombar";
 import { ToastContainer} from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
+import Footer from "../../components/shared/Footer";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -48,7 +49,7 @@ export default function RootLayout({
       <RightSidebar></RightSidebar>
     </main>
         <Bottombar></Bottombar>
-       
+       <Footer></Footer>
       </body>
     </html>
     </ClerkProvider>

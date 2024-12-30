@@ -16,13 +16,15 @@ import { ThreadValidation } from "@/lib/validations/thread";
 import { z } from "zod";
 import axios from "axios"; // Import axios
 import { toast } from "react-toastify";
-
+import { useOrganization } from "@clerk/nextjs";
 
 
 function PostThread({ userId }: { userId: string }) {
   const router = useRouter();
   const pathname = usePathname();
-
+  const {organization} = useOrganization()
+  console.log("organization" ,organization) ;
+ // console.log("organization id = " ,organization['id']) ;
   const form = useForm({
     resolver: zodResolver(ThreadValidation),
     defaultValues: {
@@ -31,7 +33,11 @@ function PostThread({ userId }: { userId: string }) {
     },
   });
 
+  
   const onSubmit = async (values: z.infer<typeof ThreadValidation>) => {
+   // console.log("organization" ,organization) ;
+   
+    if(!organization){
     try {
       // Make POST request to create a new thread using axios
       const response = await axios.post("/api/thread", {
@@ -53,6 +59,29 @@ function PostThread({ userId }: { userId: string }) {
     } catch (error) {
       console.error("Error creating thread:", error);
     }
+}else{
+    try {
+        // Make POST request to create a new thread using axios
+        const response = await axios.post("/api/thread", {
+          text: values.thread,
+          author: userId,
+          communityId: organization?.id,  // You can change this if needed
+          path: pathname,
+        });
+  
+       
+        const data = response.data;
+        
+        console.log("Thread created:", data.thread);
+  
+        // Optionally redirect after successful creation
+        router.push('/');
+        toast.success('Thread Created Successfully!')
+  
+      } catch (error) {
+        console.error("Error creating thread:", error);
+      }
+}
   };
 
   return (

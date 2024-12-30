@@ -4,8 +4,9 @@ import Link from "next/link";
 import { sidebarLinks } from "../../constants";
 import Image from "next/image";
 import { usePathname, useRouter } from "next/navigation";
-import { SignedIn, useAuth, useClerk } from "@clerk/nextjs";
+import { SignedIn, SignedOut, useAuth, useClerk } from "@clerk/nextjs";
 import { useEffect, useState } from "react";
+import { Button } from "@/components/ui/button";
 
 export default function LeftSidebar() {
     const router = useRouter();
@@ -16,13 +17,14 @@ export default function LeftSidebar() {
 
     useEffect(() => {
         if (isLoaded && userId) {
-            // Only update the profile route when we have the userId
-            setSidebarItems(sidebarLinks.map(link => {
-                if (link.route === '/profile') {
-                    return { ...link, route: `${link.route}/${userId}` };
-                }
-                return link;
-            }));
+            setSidebarItems(
+                sidebarLinks.map((link) => {
+                    if (link.route === "/profile") {
+                        return { ...link, route: `${link.route}/${userId}` };
+                    }
+                    return link;
+                })
+            );
         }
     }, [userId, isLoaded]);
 
@@ -32,25 +34,32 @@ export default function LeftSidebar() {
     };
 
     if (!isLoaded) {
-        return <div className="leftsidebar">Loading...</div>;
+        return (
+            <div className="leftsidebar">
+                <div className="flex items-center justify-center h-full">
+                    <div className="w-8 h-8 border-4 border-primary-500 border-t-transparent rounded-full animate-spin" />
+                </div>
+            </div>
+        );
     }
 
     return (
-        <div>
-            <section className="custom-scrollbar leftsidebar">
-                <div className="flex w-full flex-1 flex-col gap-6 px-6">
-                    {sidebarItems.map((link) => {
-                        const isActive =
-                            (pathname.includes(link.route) &&
-                                link.route.length > 1) ||
-                            pathname === link.route;
+        <section className="custom-scrollbar leftsidebar flex flex-col h-full">
+            <div className="flex flex-1 flex-col gap-6 px-6">
+                <SignedIn>
+                    <div className="flex flex-col gap-2">
+                        {sidebarItems.map((link) => {
+                            const isActive =
+                                (pathname.includes(link.route) &&
+                                    link.route.length > 1) ||
+                                pathname === link.route;
 
-                        return (
-                            <div key={link.label}>
+                            return (
                                 <Link
+                                    key={link.label}
                                     href={link.route}
                                     className={`leftsidebar_link ${
-                                        isActive && 'bg-primary-500'
+                                        isActive && "bg-primary-500"
                                     }`}
                                 >
                                     <Image
@@ -63,28 +72,46 @@ export default function LeftSidebar() {
                                         {link.label}
                                     </p>
                                 </Link>
-                            </div>
-                        );
-                    })}
+                            );
+                        })}
+                    </div>
+                </SignedIn>
+            </div>
+            <SignedIn>
+                <div className="px-6 mb-6">
+                    <div
+                        className="flex cursor-pointer gap-4 p-4 hover:bg-primary-500/10 rounded-lg transition-all"
+                        onClick={handleSignOut}
+                    >
+                        <Image
+                            src="/assets/logout.svg"
+                            alt="logout"
+                            width={24}
+                            height={24}
+                        />
+                        <p className="text-light-2 max-lg:hidden">Logout</p>
+                    </div>
                 </div>
+            </SignedIn>
+            <SignedOut>
+                <div className="flex flex-col gap-3 px-6 mb-6">
+                    <Link href="/sign-in">
+                        <Button  className="w-full bg-dark-3 text-white hover:bg-primary-500 hover:text-black">
+                            <span className="text-white max-lg:hidden">Log In</span>
+                        </Button>
+                    </Link>
 
-                <div className="mt-10 px-6">
-                    <SignedIn>
-                        <div
-                            className="flex cursor-pointer gap-4 p-4"
-                            onClick={handleSignOut}
+                    <Link href="/sign-up">
+                        <Button
+                           
+                            className="w-full bg-dark-3 text-white hover:bg-primary-500 hover:text-black"
                         >
-                            <Image
-                                src="/assets/logout.svg"
-                                alt="logout"
-                                width={24}
-                                height={24}
-                            />
-                            <p className="text-light-2 max-lg:hidden">Logout</p>
-                        </div>
-                    </SignedIn>
+                            
+                            <span className="max-lg:hidden">Sign Up</span>
+                        </Button>
+                    </Link>
                 </div>
-            </section>
-        </div>
+            </SignedOut>
+        </section>
     );
 }
