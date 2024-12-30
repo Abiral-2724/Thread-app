@@ -26,7 +26,7 @@ const page = async () => {
 
   return (
     <div>
-        <h1 className="head-text mb-10">Activity</h1>
+        <h1 className="head-text text-4xl text-center font-thin mt-[-40] mb-10">The Buzz Around Your Posts !</h1>
         <section className="mt-10 flex flex-col gap-5">
             {
                 activity.length > 0 ? (

@@ -4,9 +4,9 @@ import Link from "next/link";
 import { sidebarLinks } from "../../constants";
 import Image from "next/image";
 import { usePathname, useRouter } from "next/navigation";
-import { SignedIn, SignedOut, useAuth, useClerk } from "@clerk/nextjs";
+import { SignedIn, useAuth, useClerk } from "@clerk/nextjs";
 import { useEffect, useState } from "react";
-import { Button } from "@/components/ui/button";
+
 
 export default function LeftSidebar() {
     const router = useRouter();
@@ -45,7 +45,7 @@ export default function LeftSidebar() {
 
     return (
         <section className="custom-scrollbar leftsidebar flex flex-col h-full">
-            <div className="flex flex-1 flex-col gap-6 px-6">
+            <div className="flex flex-1 flex-col gap-6 px-6 mt-[-60]">
                 <SignedIn>
                     <div className="flex flex-col gap-2">
                         {sidebarItems.map((link) => {
@@ -93,25 +93,7 @@ export default function LeftSidebar() {
                     </div>
                 </div>
             </SignedIn>
-            <SignedOut>
-                <div className="flex flex-col gap-3 px-6 mb-6">
-                    <Link href="/sign-in">
-                        <Button  className="w-full bg-dark-3 text-white hover:bg-primary-500 hover:text-black">
-                            <span className="text-white max-lg:hidden">Log In</span>
-                        </Button>
-                    </Link>
-
-                    <Link href="/sign-up">
-                        <Button
-                           
-                            className="w-full bg-dark-3 text-white hover:bg-primary-500 hover:text-black"
-                        >
-                            
-                            <span className="max-lg:hidden">Sign Up</span>
-                        </Button>
-                    </Link>
-                </div>
-            </SignedOut>
+            
         </section>
     );
 }

@@ -29,7 +29,7 @@ const Search = async ({ searchParams }: { searchParams: { q: string } }) => {
 
   return (
     <div className="text-white">
-      <h1 className="head-text mb-10 ml-[45%]">Search</h1>
+      <h1 className="head-text text-center font-thin mt-[-50] mb-10">Find Your Connections, Discover New Faces</h1>
 
       {/* Search bar */}
       <SearchInput />

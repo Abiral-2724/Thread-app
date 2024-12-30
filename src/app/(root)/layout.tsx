@@ -21,7 +21,7 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata = {
-  title : 'Threads' ,
+  title : 'Threadscape' ,
   description : 'A Next.js 14 Meta threads application'
 }
 

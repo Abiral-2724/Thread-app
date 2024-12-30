@@ -26,7 +26,7 @@ async function Page({params} : { params: {id : string}}) {
 
   
     return (
-        <div>
+        <div className="mt-[-60]">
             <ProfileHeader 
             accountId = {userInfo.id}
             authUserId = {user.id}

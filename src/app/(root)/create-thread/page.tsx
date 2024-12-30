@@ -22,7 +22,7 @@ export default async function Page() {
 
   return (
     <div>
-      <h1 className="head-text">Create Thread</h1>
+      <h1 className="head-text mt-[-50] font-thin">What’s on your mind ? Let the world know in just a few clicks !</h1>
       <PostThread userId={userId}></PostThread>
     </div>
   );

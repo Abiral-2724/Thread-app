@@ -26,8 +26,8 @@ async function RightSidebar() {
 
   return (
     <section className="custom-scrollbar rightsidebar">
-      <div className="flex flex-1 flex-col justify-start">
-        <h3 className="text-heading4-medium text-light-1">
+      <div className="flex flex-1 flex-col justify-start mt-[-60]">
+        <h3 className="text-heading4-medium font-thin text-center text-light-1">
           Suggested Users
         </h3>
         <SuggestedUsers users={serializedUsers} />
